@@ -1,5 +1,5 @@
 /*
-登陆界面美化 By Lazy (lazy.ink)
+登陆界面美化 By Lazy & Ukenn 修改版 (lazy.ink)
 主题发布地址：https://blog.imlazy.ink:233/index.php/archives/169/
 */
 body {
@@ -22,17 +22,17 @@ input {
     background-size: cover;
 }
 .main .login {
-	background-color: rgba(0, 0, 0, 0.5);
-	border-radius: 4px;
-	height: 290px;
-	left: 50%;
-	margin-left: -220px;
-	margin-top: -180px;
-	padding: 35px 40px 50px;
-	position: absolute;
-	top: 50%;
-	width: 360px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	background-color: rgb(255 255 255 / 35%);
+    border-radius: 5px;
+    height: 290px;
+    left: 50%;
+    margin-left: -220px;
+    margin-top: -180px;
+    padding: 35px 40px 50px;
+    position: absolute;
+    top: 50%;
+    width: 360px;
+    box-shadow: rgb(0 0 0 / 75%) 0px 0px 35px -5px;
 }
 
 .main .login .rlogo {

@@ -1825,7 +1825,7 @@
 }
 
 .file_path_input input.focus {
-	background-color: #fff
+	background-color: rgba(244, 245, 247, var(--blur-opacity));
 }
 
 .file_dir_omit {
@@ -2216,8 +2216,8 @@
 }
 
 .file_bodys {
-	background-color: rgba(0,0,0,0.5);
-	box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.8);
+	background-color: rgba(244, 245, 247, var(--blur-opacity));
+    box-shadow: rgb(0 0 0 / 75%) 0px 0px 10px -5px;
 	margin: 10px 15px;
 	padding: 15px 20px;
 	font-size: 12px;
