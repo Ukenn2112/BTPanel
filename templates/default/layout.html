@@ -77,6 +77,17 @@
 	</script>
 </head>
 <body>
+	<!--背景图片（如有需要请修改url）-->
+	<div style="
+    z-index: -3;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    min-height: 475px;
+    background-image: url(https://tva2.sinaimg.cn/large/006MpbfMgy1grosiqpn7pj33o322au17.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    "></div>
     <div class="bt-warp bge6">
 		<a style="display:none;" id="panel_debug" data="{{g['debug']}}" data-pyversion="{{g['pyversion']}}"></a>
         <a style="display:none;" id="request_token_head" token="{{session['request_token_head']}}"></a>
@@ -99,7 +110,7 @@
             <button style="display: none;" id="bt_copys" class="bt_copy" data-clipboard-text=""></button>
             <a style="display: none;" id="defaultPath">{{session['config']['sites_path']}}</a>
             {% block content %}{% endblock %}
-            <div class="footer bgw">{{session['brand']}}{{session['product']}} &copy;2014-{{g['yaer']}} 广东堡塔安全技术有限公司 (bt.cn)<a style="margin-left:10px;color:#20a53a;" href="http://www.bt.cn/bbs" target="_blank">求助|建议请上宝塔论坛</a>
+            <div class="footer bgw">{{session['brand']}}{{session['product']}} &copy;2014-{{g['yaer']}} 广东堡塔安全技术有限公司 (bt.cn)<a style="margin-left:10px;color:#20a53a;" href="http://www.bt.cn/bbs" target="_blank">求助|建议请上宝塔论坛</a> | <a style="color:#20a53a;" href="https://www.lazy.ink/" target="_blank">主题作者：Lazy</a>
         </div>
 	</div>
 	{% if g.cdn_url != '/static' %}
