@@ -1,0 +1,205 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="main-content pb55">
+    <div class="container-fluid">
+        <div class="pos-box bgw mtb15">
+            <div class="position f14 c9 pull-left">
+                <a class="plr10 c4" href="/">{{data['lan']['H1']}}</a>/<span class="plr10 c4">{{data['lan']['H2']}}</span>
+            </div>
+        </div>
+        <div class="safe bgw mtb15 pd15">
+            <div class="info-title-tips">
+                <p><span class="glyphicon glyphicon-alert" style="color: #f39c12; margin-right: 10px;"></span>{{data['lan']['PS']}} <a target="_blank" class="btlink" href=" ftp://{{session['address']}}:{{session['port']}}"> ftp://{{session['address']}}:{{session['port']}}</a></p>
+            </div>
+			<div id="bt_ftp_table"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+	bt.set_cookie('sites_path',"{{session['config']['sites_path']}}");
+    {% if not data['isSetup'] %}
+		layer.msg('{{data["lan"]["JS1"]}}<a href="/soft" style="color:#20a53a; float: right;">{{data["lan"]["JS2"]}}</a>',{icon:7,time:0,shade: [0.3, '#000']});
+        $(".layui-layer-shade").css("margin-left", "180px");
+    {% else %}
+		var ftp_table = bt_tools.table({
+			el:'#bt_ftp_table',
+			url:'/data?action=getData',
+			param:{table:'ftps'},
+			minWidth:'1000px',
+			autoHeight:true,
+			default:"FTP列表为空",
+			methods:{
+				/**
+					* @description 设置FTP端口
+					* @param {function} callback 回调函数
+					* @return void
+				*/
+				add_ftp_user:function(callback){
+					var that = this;
+					bt.ftp.add(function(rdata){
+						if(callback) callback(rdata);
+						if(rdata.status) that.$refresh_table_list(true);
+					})
+				},
+				/**
+				 * @description 设置FTP端口
+				 * @param {object} obj 配置对象包含port
+				 * @param {function} callback 回调函数
+				 * @return void
+				*/
+				del_ftp_user:function(obj,callback){
+					var that = this;
+					bt.show_confirm(lan.public.del+"["+ obj.name +"]",lan.get('confirm_del',[obj.name]),function(){
+						bt.ftp.del(obj.id,obj.name,function(rdata){
+							if(callback) callback(rdata);
+							bt.msg(rdata);
+						});
+					});
+				},
+				/**
+				 * @description 设置FTP密码
+				 * @param {object} obj 配置对象包含id、name、password
+				 * @param {function} callback 回调函数
+				 * @return void
+				*/
+				set_ftp_password:function(obj,callback){
+					var that = this,bs = bt.ftp.set_password(function(rdata){
+						if(callback) callback(rdata);
+					});
+					$('.id'+bs).val(obj.id);
+					$('.ftp_username'+bs).val(obj.name);
+					$('.new_password'+bs).val(obj.password);
+				},
+				/**
+				 * @description 设置FTP端口
+				 * @param {object} obj 配置对象包含port
+				 * @param {function} callback 回调函数
+				 * @return void
+				*/
+				set_ftp_port:function(callback){
+					var bs = bt.ftp.set_port(function(rdata){
+						if(callback) callback(rdata);
+						if (rdata.status) {
+							setTimeout(function () {
+								window.location.reload()
+							}, 1000)
+						}	
+					})
+					$('.port'+bs).val('{{session["port"]}}');
+				},
+				/**
+				 * @description 设置ftp状态
+				 * @param {object} obj 配置对象包含id、username、status
+				 * @param {function} callback 回调函数
+				 * @return void
+				*/
+				set_ftp_status:function(obj,callback){
+					if(!parseInt(obj.status)){
+						bt.ftp.set_status(obj.id,obj.name,"1",function(rdata){
+							if(callback) callback(rdata);
+						});
+					}else{
+						bt.confirm({msg:lan.ftp.stop_confirm.replace('{1}',obj.name),title:lan.ftp.stop_title},function(index){			
+							bt.ftp.set_status(obj.id,obj.name,"0",function(rdata){
+								if(callback) callback(rdata);
+							});
+						});
+					}
+				}
+			},
+			column:[
+				{type:'checkbox',width:20},
+				{fid:'name',title:'用户名',type:'text'},
+				{fid:'password',title:'密码',type:'password',copy:true,eye_open:true},
+				{fid:'status',title:'状态',sort:true,width:100,config:{
+					icon:true,list:[['1','已启用','bt_success','glyphicon-play'],['0','已停用','bt_danger','glyphicon-pause']]},type:'status',event:function(row,index,ev,key,that){
+					that.set_ftp_status({id:row.id,status:row.status,name:row.name},function(res){
+						if(res.status) that.$modify_row_data({status:parseInt(row.status)?'0':'1'});
+					});
+				}},
+				{fid:'path',title:'根目录',type:'link',event:function(row,index,ev){
+					openPath(row.path);
+				}},
+				{fid:'ps',title:'备注',type:'input',blur:function(row,index,ev){
+					bt.pub.set_data_ps({id:row.id,table:'ftps',ps:ev.target.value},function(res){
+						bt_tools.msg(res);
+					});
+				},keyup:function(row,index,ev){
+					if(ev.keyCode === 13){
+						$(this).blur();
+					}
+				}},
+				{title:'操作',type:'group',width:170,align:'right',group:[{
+					title:'改密',event:function(row,index,ev,key,that){
+						that.set_ftp_password({id:row.id,name:row.name,password:row.password},function(){
+							if(rdata.status) that.$refresh_table_list(true);
+						});
+					}
+				},{
+					title:'删除',event:function(row,index,ev,key,that){
+						that.del_ftp_user({id:row.id,name:row.name},function(res){
+							if(res.status) that.$refresh_table_list(true);
+						});
+					}
+				}]}
+			],
+			tootls:[{
+				type:'group',
+				positon:['left','top'],
+				list:[
+					{title:'添加FTP',active:true,event:function(ev,that){
+						that.add_ftp_user();
+					}},
+					{title:'修改FTP端口',event:function(ev,that){
+						that.set_ftp_port();
+					}}
+				]
+			},{ // 批量操作
+				type:'batch',
+				positon:['left','bottom'],
+				config:{
+					title:"删除",
+					url:'/ftp?action=DeleteUser',
+					load:true,
+					param:function(row){
+						return {id:row.id,username:row.name};
+					},
+					callback:function(that){
+						bt.confirm({title:'批量删除FTP',msg:'是否批量删除选中的FTP用户，是否继续？',icon:0},function(index){
+							layer.close(index);
+							that.start_batch({},function(list){
+								var html = '';
+								for(var i=0;i<list.length;i++){
+									var item = list[i];
+									html += '<tr><td>'+ item.name +'</td><td><div style="float:right;"><span style="color:'+ (item.request.status?'#20a53a':'red') +'">'+ item.request.msg +'</span></div></td></tr>';
+								}
+								ftp_table.$batch_success_table({title:'批量删除FTP',th:'FTP用户名',html:html});
+								ftp_table.$refresh_table_list(true);
+							});
+						});
+					}
+				}
+			},{
+				type:'search',
+				positon:['right','top'],
+				placeholder:'请输入FTP用户名',
+				searchParam:'search', //搜索请求字段，默认为 search
+				value:'',// 当前内容,默认为空
+			},{ //分页显示
+				type:'page',
+				positon:['right','bottom'], // 默认在右下角
+				pageParam:'p', //分页请求字段,默认为 : p
+				page:1, //当前分页 默认：1
+				numberParam:'limit',　//分页数量请求字段默认为 : limit
+				number:20,　//分页数量默认 : 20条
+				numberList:[10,20,50,100,200], // 分页显示数量列表
+				numberStatus:true, //　是否支持分页数量选择,默认禁用
+				jump:true, //是否支持跳转分页,默认禁用
+			}]
+		});
+    {% endif %}	
+</script>
+{% endblock %}
