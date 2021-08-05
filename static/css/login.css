@@ -1,6 +1,7 @@
 /*
-登陆界面美化 By Lazy & Ukenn 修改版 (lazy.ink)
-主题发布地址：https://blog.imlazy.ink:233/index.php/archives/169/
+登陆界面美化 By Lazy & Ukenn 修改版
+项目：https://github.com/Ukenn2112/BTPanel
+原项目：https://blog.imlazy.ink:233/index.php/archives/169/
 */
 body {
 	background-color: #444;
@@ -582,7 +583,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-	width: 10px;
+	width: 0 !important;
 	height: 1px;
 }
 

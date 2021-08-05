@@ -1,10 +1,10 @@
 /*!
  
  @Name: 宝塔面板框架主题样式
- @Last Date: 2021.6.20
+ @Last Date: 2021.8.05
  @Create Date: 2021.3.21					
  @Author: Lazy & Ukenn 修改版
- @WebSite: https://blog.imlazy.ink:233/index.php/archives/38/
+ @Project: https://github.com/Ukenn2112/BTPanel @Original Project: https://blog.imlazy.ink:233/index.php/archives/38/
  
  */
 
@@ -390,6 +390,7 @@ html {
 .info-title-tips {
 	background-color: rgba(255,204,59,0.5);
     border:  0 0 6px #ceb400;
+	border-radius: 5px;
     line-height: 46px;
     margin-bottom: 15px;
     padding-left: 10px;
@@ -1206,7 +1207,7 @@ html .menu .menu_btwaf:hover{
     border: #e6e6e6 1px solid;
 }
 .divtable .table {
-	border: 1px solid #ddd;
+	/* border: 1px solid #ddd; */
 	color: #ddd;
 	font-size: 12px;
 	margin-bottom: 0;
@@ -1783,6 +1784,7 @@ html .menu .menu_btwaf:hover{
 .bt-form-submit-btn {
 	background: rgba(255, 255, 255, 0.6);
 	border-top: 1px solid #edf1f2;
+	border-radius: 0 0 5px 5px;
 	bottom: 0;
 	left: 0;
 	padding: 8px 20px 10px;
