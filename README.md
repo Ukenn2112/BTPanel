@@ -9,4 +9,4 @@ https://blog.ukenn.top/baota/
 
 # 预览图
 
-![img](https://i.ibb.co/cT2SWLC/123213232eeee.png)
+![img](https://cdn.jsdelivr.net/gh/Ukenn2112/Ukennweb@master/index/123213232eeee.png)
